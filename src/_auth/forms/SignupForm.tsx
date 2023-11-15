@@ -16,10 +16,11 @@ import { Input } from "../../components/ui/input";
 import Loader from "../../components/shared/Loader";
 import { Link } from "react-router-dom";
 import { createUserAccount } from "../../lib/appwrite/api";
+import { useToast } from "../../components/ui/use-toast";
 
 const SignupForm = () => {
   const isLoading = false;
-
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
     defaultValues: {
@@ -32,10 +33,14 @@ const SignupForm = () => {
 
   const obSubmit = async (values: z.infer<typeof SignupValidation>) => {
     const newUser = await createUserAccount(values);
-    console.log("newUser", newUser);
+    if (!newUser) {
+      return  toast({
+        title: "Sign up failed. Please try again."
+      })
+    }
+    // const session = await signInAccount()
   };
 
-  console.log('process.env.APPWRITE_PROJECT_ID', process.env.APPWRITE_PROJECT_ID)
   return (
     <div>
       <Form {...form}>
