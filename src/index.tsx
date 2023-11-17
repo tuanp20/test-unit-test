@@ -3,6 +3,8 @@ import ReactDOM from "react-dom/client";
 import "./globals.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
+import AuthProvider from "./context/AuthContext";
+import QueryProvider from "./lib/react-query/QueryProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -10,7 +12,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <QueryProvider>
+        <AuthProvider>
+          <App />
+        </AuthProvider>
+      </QueryProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
